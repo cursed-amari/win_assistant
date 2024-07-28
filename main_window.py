@@ -244,13 +244,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     @logger.catch
     def create_buffer_frame(self, context):
+        if self.control_number_buffers():
+            buffer = BufferFrame(self.page_buffer.scrollAreaWidgetContents_buffer, context)
+            buffer.label.mouseDoubleClickEvent = lambda event: self.get_buffer(event, buffer.label.text())
+            buffer.checkBox_pin.clicked.connect(lambda event: self.pin_buffer(buffer.get_frame()))
+            self.current_buffer.append(buffer)
+            self.page_buffer.verticalLayout_scrollArea.addWidget(buffer.get_frame())
+
+    @logger.catch
+    def pin_buffer(self, frame):
+        self.current_buffer.sort(key=lambda x: not x.checkBox_pin.isChecked())
+        self.delete_buffer_frames()
+        self.add_buffer_frames()
+
+    @logger.catch
+    def control_number_buffers(self):
         if len(self.current_buffer) >= 5:
-            self.current_buffer[0].get_frame().deleteLater()
-            self.current_buffer.pop(0)
-        buffer = BufferFrame(self.page_buffer.scrollAreaWidgetContents_buffer, context)
-        buffer.label.mouseDoubleClickEvent = lambda event: self.get_buffer(event, buffer.label.text())
-        self.current_buffer.append(buffer)
-        self.page_buffer.verticalLayout_scrollArea.insertWidget(0, buffer.get_frame())
+            for i in self.current_buffer:
+                if not i.checkBox_pin.isChecked():
+                    deleted = self.current_buffer.pop(self.current_buffer.index(i))
+                    deleted.get_frame().deleteLater()
+                    break
+        if self.current_buffer:
+            if all(element.checkBox_pin.isChecked() for element in self.current_buffer) and \
+                    len(self.current_buffer) >= 5:
+                return False
+            else:
+                return True
+        else:
+            return True
+
+    @logger.catch
+    def add_buffer_frames(self):
+        for i in self.current_buffer:
+            self.page_buffer.verticalLayout_scrollArea.addWidget(i.get_frame())
+
+    @logger.catch
+    def delete_buffer_frames(self):
+        for i in self.current_buffer:
+            self.page_buffer.verticalLayout_scrollArea.removeWidget(i.get_frame())
 
     @logger.catch
     def get_buffer(self, event, context):
