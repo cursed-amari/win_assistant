@@ -24,7 +24,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.list_navigate = [self.pushButton_minmax, self.pushButton_create_note,
-                              self.pushButton_buffer, self.pushButton_mail]
+                              self.pushButton_buffer, self.pushButton_exit]
         self.clipboard = QApplication.clipboard()
         self.window_status = 0
         self.save_data = {}
@@ -39,7 +39,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.centralwidget.leaveEvent = self.onLeave
 
         self.pushButton_minmax.clicked.connect(self.full_window)
-        self.pushButton_mail.clicked.connect(lambda: self.close())
+        self.pushButton_exit.clicked.connect(lambda: self.close())
         self.pushButton_create_note.clicked.connect(self.open_create_note)
         self.page_create_note.pushButton_create_note_save.clicked.connect(self.create_note)
         self.pushButton_buffer.clicked.connect(self.open_buffer)
