@@ -7,11 +7,12 @@
 
 
 from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtCore import Qt
 
 from initWindow.page_buffer_init import PageBufferInit
 from initWindow.page_create_note_init import PageCreateNoteInit
 from initWindow.page_note_init import PageNoteInit
+from initWindow.page_downloader_init import PageDownloaderInit
 
 
 class Ui_MainWindow(object):
@@ -45,19 +46,19 @@ class Ui_MainWindow(object):
         self.pushButton_minmax = QtWidgets.QPushButton(self.frame_navigate)
         self.pushButton_minmax.setMaximumSize(QtCore.QSize(40, 16777215))
         self.pushButton_minmax.setObjectName("pushButton_minmax")
-        self.gridLayout.addWidget(self.pushButton_minmax, 0, 0, 1, 1)
+
         self.pushButton_create_note = QtWidgets.QPushButton(self.frame_navigate)
         self.pushButton_create_note.setMaximumSize(QtCore.QSize(40, 16777215))
         self.pushButton_create_note.setObjectName("pushButton_create_note")
-        self.gridLayout.addWidget(self.pushButton_create_note, 0, 1, 1, 1)
+
         self.pushButton_buffer = QtWidgets.QPushButton(self.frame_navigate)
         self.pushButton_buffer.setMaximumSize(QtCore.QSize(40, 16777215))
         self.pushButton_buffer.setObjectName("pushButton_buffer")
-        self.gridLayout.addWidget(self.pushButton_buffer, 0, 2, 1, 1)
+
         self.pushButton_exit = QtWidgets.QPushButton(self.frame_navigate)
         self.pushButton_exit.setMaximumSize(QtCore.QSize(40, 16777215))
         self.pushButton_exit.setObjectName("pushButton_exit")
-        self.gridLayout.addWidget(self.pushButton_exit, 0, 3, 1, 1)
+
         self.verticalLayout.addWidget(self.frame_navigate)
         self.frame_list = QtWidgets.QFrame(self.centralwidget)
         self.frame_list.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
@@ -77,6 +78,16 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_buffer.get_widget())
         self.verticalLayout_2.addWidget(self.stackedWidget)
         self.verticalLayout.addWidget(self.frame_list)
+        self.pushButton_video_download = QtWidgets.QPushButton(self.frame_navigate)
+        self.pushButton_video_download.setMaximumSize(QtCore.QSize(40, 16777215))
+        self.pushButton_video_download.setObjectName("pushButton_video_download")
+        self.page_video_download = PageDownloaderInit()
+        self.stackedWidget.addWidget(self.page_video_download.get_widget())
+        self.gridLayout.addWidget(self.pushButton_minmax, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_create_note, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_buffer, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_video_download, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_exit, 0, 4, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -86,8 +97,9 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_minmax.setText(_translate("MainWindow", "<"))
-        self.pushButton_create_note.setText(_translate("MainWindow", "+"))
-        self.pushButton_buffer.setText(_translate("MainWindow", "буфер"))
+        self.pushButton_create_note.setText(_translate("MainWindow", "note"))
+        self.pushButton_buffer.setText(_translate("MainWindow", "buffer"))
+        self.pushButton_video_download.setText(_translate("MainWindow", "download"))
         self.pushButton_exit.setText(_translate("MainWindow", "exit"))
         self.page_create_note.checkBox_create_note_notification_activate.setText(_translate("MainWindow", "CheckBox"))
         self.page_create_note.pushButton_create_note_save.setText(_translate("MainWindow", "save"))

@@ -3,6 +3,7 @@ from PyQt6 import QtWidgets, QtCore
 
 class BufferFrame:
     def __init__(self, parent, context):
+        self.context = context
         self.frame = QtWidgets.QFrame(parent)
         self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
@@ -15,7 +16,7 @@ class BufferFrame:
         self.label = QtWidgets.QLabel(self.frame)
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
-        self.label.setText(context)
+        self.label.setText(self.context)
         self.verticalLayout.addWidget(self.label)
         self.frame_aditional = QtWidgets.QFrame(self.frame)
         self.frame_aditional.setMaximumSize(QtCore.QSize(16777207, 20))

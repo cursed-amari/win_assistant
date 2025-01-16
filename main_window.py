@@ -18,13 +18,18 @@ from utils import open_save, get_taskbar_height
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     copySignal = pyqtSignal()
+    paste_one_Signal = pyqtSignal(int)
+    paste_two_Signal = pyqtSignal(int)
+    paste_three_Signal = pyqtSignal(int)
+    paste_four_Signal = pyqtSignal(int)
+    paste_five_Signal = pyqtSignal(int)
 
     @logger.catch
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.list_navigate = [self.pushButton_minmax, self.pushButton_create_note,
-                              self.pushButton_buffer, self.pushButton_exit]
+                              self.pushButton_buffer, self.pushButton_video_download, self.pushButton_exit]
         self.clipboard = QApplication.clipboard()
         self.window_status = 0
         self.save_data = {}
@@ -43,7 +48,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton_create_note.clicked.connect(self.open_create_note)
         self.page_create_note.pushButton_create_note_save.clicked.connect(self.create_note)
         self.pushButton_buffer.clicked.connect(self.open_buffer)
+        self.pushButton_video_download.clicked.connect(self.open_downloader)
         self.copySignal.connect(self.onCtrlCPressed)
+        self.paste_one_Signal.connect(self.get_buffer_hotkey)
+        self.paste_two_Signal.connect(self.get_buffer_hotkey)
+        self.paste_three_Signal.connect(self.get_buffer_hotkey)
+        self.paste_four_Signal.connect(self.get_buffer_hotkey)
+        self.paste_five_Signal.connect(self.get_buffer_hotkey)
 
         self.frame_list.setVisible(False)
         self.setFixedSize(10, 200)
@@ -51,12 +62,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.frame_navigate.setMinimumSize(QSize(40, 120))
         counter = 0
         for i in self.list_navigate:
-            i.setMinimumSize(QSize(40, 23))
+            if i.text() == "download":
+                i.setMinimumSize(QSize(60, 23))
+            else:
+                i.setMinimumSize(QSize(40, 23))
             self.gridLayout.removeWidget(i)
             self.gridLayout.addWidget(i, counter, 0)
             counter += 1
 
-        self.window_move(10, 200)
+        self.window_move(10, 193)
 
         self.stackedWidget.setCurrentIndex(0)
 
@@ -79,7 +93,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.position_widgets(1)
             self.setFixedSize(10, 200)
             self.centralwidget.setFixedSize(10, 200)
-            self.window_move(10, 200)
+            self.window_move(10, 193)
             self.frame_list.setVisible(False)
             self.pushButton_minmax.setText('<')
 
@@ -104,14 +118,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.window_status == 0:
             self.setFixedSize(60, 200)
             self.centralwidget.setFixedSize(60, 200)
-            self.window_move(60, 200)
+            self.window_move(59, 193)
 
     @logger.catch
     def onLeave(self, event):
         if self.window_status == 0:
             self.setFixedSize(10, 200)
             self.setFixedSize(10, 200)
-            self.window_move(10, 200)
+            self.window_move(10, 193)
 
     @logger.catch
     def window_move(self, x: int, y: int):
@@ -227,6 +241,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @logger.catch
     def setupClipboardListener(self):
         keyboard.add_hotkey('ctrl+c', lambda: self.copySignal.emit())
+        keyboard.add_hotkey('alt+1', lambda: self.paste_one_Signal.emit(1))
+        keyboard.add_hotkey('alt+2', lambda: self.paste_two_Signal.emit(2))
+        keyboard.add_hotkey('alt+3', lambda: self.paste_three_Signal.emit(3))
+        keyboard.add_hotkey('alt+4', lambda: self.paste_four_Signal.emit(4))
+        keyboard.add_hotkey('alt+5', lambda: self.paste_five_Signal.emit(5))
 
     @logger.catch
     def onCtrlCPressed(self):
@@ -287,6 +306,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     @logger.catch
     def get_buffer(self, event, context):
         self.clipboard.setText(context)
+
+    @logger.catch
+    def get_buffer_hotkey(self, signal):
+        if 0 <= signal - 1 < len(self.current_buffer):
+            self.clipboard.setText(self.current_buffer[signal-1].context)
+
+    @logger.catch
+    def open_downloader(self, event):
+        self.stackedWidget.setCurrentIndex(3)
 
 
 if __name__ == "__main__":
