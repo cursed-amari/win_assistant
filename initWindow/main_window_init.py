@@ -88,6 +88,23 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.pushButton_buffer, 0, 2, 1, 1)
         self.gridLayout.addWidget(self.pushButton_video_download, 0, 3, 1, 1)
         self.gridLayout.addWidget(self.pushButton_exit, 0, 4, 1, 1)
+
+        self.frame_info = QtWidgets.QFrame(self.centralwidget)
+        self.frame_info.setObjectName("frame_info")
+        self.frame_info.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_info.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.verticalLayout.addWidget(self.frame_info)
+
+        self.layout_info = QtWidgets.QVBoxLayout(self.frame_info)
+        self.layout_info.setContentsMargins(0, 0, 0, 0)
+        self.frame_info.setLayout(self.layout_info)
+        self.textEdit_info = QtWidgets.QTextEdit(self.frame_info)
+        self.textEdit_info.setReadOnly(True)
+        self.layout_info.addWidget(self.textEdit_info)
+        self.frame_info.setMaximumSize(QtCore.QSize(400, 25))
+        self.textEdit_info.setText("Info panel")
+
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -99,7 +116,7 @@ class Ui_MainWindow(object):
         self.pushButton_minmax.setText(_translate("MainWindow", "<"))
         self.pushButton_create_note.setText(_translate("MainWindow", "note"))
         self.pushButton_buffer.setText(_translate("MainWindow", "buffer"))
-        self.pushButton_video_download.setText(_translate("MainWindow", "download"))
+        self.pushButton_video_download.setText(_translate("MainWindow", "▸"))
         self.pushButton_exit.setText(_translate("MainWindow", "exit"))
         self.page_create_note.checkBox_create_note_notification_activate.setText(_translate("MainWindow", "CheckBox"))
         self.page_create_note.pushButton_create_note_save.setText(_translate("MainWindow", "save"))
